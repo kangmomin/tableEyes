@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="test()">test</button>
+    <div id="x"></div>
+    <script>
+        function test() {
+            let array = new Array()
+            array.push('a', 'b')
+            $.ajax({
+                url: "http://koldin.myddns.me:4004/store",
+                type: "POST",
+                data: {
+                    'name': "hello World",
+                    'description': "hello World",
+                    'maxPersonnel': 12,
+                    'lat': 1.23112,
+                    'lon': 1.23112,
+                    'category': array,
+                    'logo': "koldin.myddns.me"
+                },
+                success: (result) => {
+                    console.log(result)
+                    document.querySelector("#x").innerText = result[1]
+                }
+            })
+        }
+    </script>
+</body>
+</html>
