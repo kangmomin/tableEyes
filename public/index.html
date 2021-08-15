@@ -5,13 +5,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <title>Document</title>
+    <title>test</title>
 </head>
 <body>
-    <button onclick="test()">test</button>
+    <input type="number" value="0" id="inp" placeholder="id"> <br />
+    <button onclick="post()">post</button>
+    <button onclick="put()">put</button>
+    <button onclick="get()">get</button>
+    <button onclick="del()">delete</button>
     <div id="x"></div>
     <script>
-        function test() {
+        function del() {
+            const id = document.querySelector("#inp").value
+            $.ajax({
+                url: "http://koldin.myddns.me:4004/store",
+                data: { id: id },
+                type: "delete",
+                success: (data) => {
+                    document.querySelector("#x").innerHTML = data
+                }
+            })
+        }
+        
+        function put() {
+            const id = document.querySelector("#inp").value
+            $.ajax({
+                url: "http://koldin.myddns.me:4004/store/" + id,
+                type: 'put',
+                data: {
+                    category: ["a","b"],
+                    description: "hello World",
+                    lat: 1.23112,
+                    logo: "koldin.myddns.me",
+                    lon: 1.23112,
+                    maxPersonnel: 12,
+                    name: "changed"
+                }
+            })
+        }
+        
+        function get() {
+            $.ajax({
+                url: "http://koldin.myddns.me:4004/store",
+                type: "get",
+                success: (data) => {
+                    console.log(data)
+                    document.querySelector("#x").innerHTML = data
+                }
+            })
+        } 
+        
+        function post() {
             let array = new Array()
             array.push('a', 'b')
             $.ajax({
@@ -32,6 +76,6 @@
                 }
             })
         }
-    </script>
+        </script>
 </body>
 </html>
