@@ -13,6 +13,8 @@
     <button onclick="put()">put</button>
     <button onclick="get()">get</button>
     <button onclick="del()">delete</button>
+    <button onclick="patch()">patch</button>
+
     <div id="x"></div>
     <script>
         function del() {
@@ -44,9 +46,24 @@
             })
         }
         
-        function get() {
+        function patch() {
+            const id = document.querySelector("#inp").value
             $.ajax({
-                url: "http://koldin.myddns.me:4004/store",
+                url: "http://koldin.myddns.me:4004/store/personnel/" + id,
+                type: 'patch',
+                data: {
+                    personnel: 10
+                }
+            })
+        }
+
+        function get() {
+            let id = document.querySelector("#inp").value
+            let link = "http://koldin.myddns.me:4004/store/All/"
+            if(id != 0) link += id
+
+            $.ajax({
+                url: link,
                 type: "get",
                 success: (data) => {
                     console.log(data)

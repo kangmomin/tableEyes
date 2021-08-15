@@ -7,6 +7,7 @@ const storeRequest = require('./router/storeRequest')
 const addStore = require('./router/addStore')
 const editStore = require('./router/editStore')
 const deleteStore = require('./router/deleteStore')
+const editPersonnel = require('./router/editPersonnel')
 
 app.set('views', __dirname + '/public')
 app.set('view engine','ejs')
@@ -16,9 +17,11 @@ app.use(bp.urlencoded({ extended: false }))
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', (req, res) => res.render('/index.html'))
-app.get('/store/:type?', storeRequest)
+app.get('/store/:type?/:id?', storeRequest)
 
 app.put('/store/:id', editStore)
+
+app.patch('/store/personnel/:id', editPersonnel)
 
 app.delete('/store', deleteStore)
 

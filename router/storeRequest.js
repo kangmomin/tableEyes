@@ -7,9 +7,11 @@ const mysqli = require("mysql").createConnection({
     database: "tableeyes"
 })
 
-app.get('/store/:type?', async (req, res) => {
-    const type = req.params.type || "default"
-    const query = setQuery(type)
+app.get('/store/:type?/:id?', async (req, res) => {
+    const type = req.params.type || "All"
+    const id = req.params.id || null
+    const query = setQuery(type, id)
+    console.log(query)
     const db = await getDB(query).catch(err => {
         console.log(err.code) //배포시 삭제
         if(err.code == `ER_BAD_FIELD_ERROR`) res.status(400).send({
@@ -29,10 +31,11 @@ async function getDB(query) {
     })
 }
 
-function setQuery(type) {
-    const defaultQuery = `SELECT * FROM store`
-    if(type == 'default') return defaultQuery
-    let query =  `SELECT ${type} FROM store`
+function setQuery(type, id) {
+    let query = `SELECT * FROM store`
+    if(id !== null && id !== undefined) query += ` WHERE id=${id}`
+    if(type == 'All') return query
+    query =  `SELECT ${type} FROM store`
     return query
 }
 
