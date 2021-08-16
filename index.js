@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const port = 4004
 const bp = require('body-parser')
@@ -13,6 +14,10 @@ app.set('views', __dirname + '/public')
 app.set('view engine','ejs')
 app.engine('html', require('ejs').renderFile)
 app.use(bp.urlencoded({ extended: false }))
+app.use(cors({
+    origin: true,
+    credentials: true
+}))
 
 app.use(express.static(__dirname + '/public'))
 
