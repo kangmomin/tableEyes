@@ -12,14 +12,16 @@ app.get('/store/:type?/:id?', async (req, res) => {
     const id = req.params.id || null
     const query = setQuery(type, id)
     console.log(query)
-    const db = await getDB(query).catch(err => {
+    try {
+        const db = await getDB(query)
+        res.status(200).send(["200 successed", db])
+    } catch(err) {
         console.log(err.code) //배포시 삭제
         if(err.code == `ER_BAD_FIELD_ERROR`) res.status(400).send({
             comment: "Bad Request",
             code: -400
         })
-    })
-    res.status(200).send(db)
+    }
 })
 
 async function getDB(query) {

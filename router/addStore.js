@@ -13,22 +13,24 @@ app.post('/store', (req, res) => {
     } = req.body
     const category = JSON.stringify(req.body["category[]"])
     const params = [name, lat, lon, maxPersonnel, description, category, logo] 
-    const result = addStore(params).catch(err => {
+    try {
+        const result = addStore(params)
+        res.status(201).send(["koldin.myddns.me:4004 201 Created", {
+            id: result.inserId,
+            name: name,
+            description: description,
+            maxPersonnel: maxPersonnel,
+            logo: logo,
+            lat: lat,
+            lon: lon,
+            category: category
+        }])
+    } catch(err) {
         console.log(err)
         return res.status(400).send(["HTTP/1.1 400 Bad Request", {
-            "massage": err
+            massage: err
         }])
-    })
-    res.status(201).send(["koldin.myddns.me:4004 201 Created", {
-        id: result.inserId,
-        name: name,
-        description: description,
-        maxPersonnel: maxPersonnel,
-        logo: logo,
-        lat: lat,
-        lon: lon,
-        category: category
-    }])
+    }
 })
 
 async function addStore(params) {
@@ -40,7 +42,5 @@ async function addStore(params) {
         })
     })
 }
-
-// id des now max star starC name wait lat lon open logo cate
 
 module.exports = app
