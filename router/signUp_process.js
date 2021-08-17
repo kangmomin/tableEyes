@@ -1,6 +1,5 @@
 const app = require('express').Router()
 const crypto = require('crypto-js')
-const cryptoRandomString = require('crypto-random-string')
 const nodemailer = require('nodemailer')
 const mysqli = require('mysql').createConnection({
     host: "127.0.0.1",
@@ -13,7 +12,7 @@ const mysqli = require('mysql').createConnection({
 app.post('/sign-up', async (req, res) => {
     const { id, password, name, email } = req.body
     let params = [id, encrypter(password), name, email]
-    let checkKey = cryptoRandomString({length: 20, type: 'base64'})
+    let checkKey = crypto.randomBytes(20).toString('base64')
     try {
         const accountId = await signUp(params)
         await sendMail(email, checkKey)
@@ -56,8 +55,8 @@ async function sendMail(email, checkKey) {
 }
 
 function encrypter (password) {
-    const random = cryptoRandomString({length: 10, type: 'base64'})
-    const password = crypto.createHash('sha512').update(password + random).digest('base64')
+    const random = crypto.randomBytes(10).toString('base64')
+    const result = crypto.createHash('sha512').update(result + random).digest('base64')
     return password
 }
 

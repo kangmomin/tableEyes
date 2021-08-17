@@ -13,6 +13,7 @@ const editStore = require('./router/editStore')
 const deleteStore = require('./router/deleteStore')
 const editPersonnel = require('./router/editPersonnel')
 const login_process = require('./router/login_process')
+const singUp_process = require('./router/signUp_process')
 
 const sessionStore = new MySQLStore({
     host: "127.0.0.1",
@@ -55,6 +56,7 @@ app.delete('/store', deleteStore)
 
 app.post('/store', addStore)
 app.post('/login', login_process)
+app.post('/signUp', singUp_process)
 
 app.get('*', (req, res) => res.status(404).send("NOT FOUND PAGE"))
 
