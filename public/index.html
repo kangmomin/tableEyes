@@ -19,14 +19,28 @@
 
     <div id="x"></div>
     <script>
+        function login() {
+            $.ajax({
+                url: "http://koldin.myddns.me:4004/login",
+                type: "post",
+                data: {
+                    id: "alex2",
+                    password: "2"
+                },
+                success: (data) => {
+                    console.log(data)
+                    document.querySelector("#x").innerHTML = data
+                }
+            })
+        }
 
         function signUp() {
             $.ajax({
                 url: "http://koldin.myddns.me:4004/sign-up",
                 type: 'post',
                 data: {
-                    name: "hello",
-                    password: "koldin",
+                    name: "alex2",
+                    password: "2",
                     email: "momin108902@gmail.com",
                     age: 12,
                     sex: "male",
