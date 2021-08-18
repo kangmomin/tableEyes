@@ -1,5 +1,6 @@
 const app = require('express').Router()
-const crypto = require('crypto-js')
+const crypto_js = require('crypto-js')
+const crypto = require('crypto')
 const nodemailer = require('nodemailer')
 const mysqli = require('mysql').createConnection({
     host: "127.0.0.1",
@@ -10,18 +11,21 @@ const mysqli = require('mysql').createConnection({
 })
 
 app.post('/sign-up', async (req, res) => {
-    const { id, password, name, email } = req.body
-    let params = [id, encrypter(password), name, email]
+    const { password, name, email, age, sex, phoneNumber, hometown } = req.body
+    const encrypted = encrypter(password)
     let checkKey = crypto.randomBytes(20).toString('base64')
+    let params = [name, encrypted[0], email, encrypted[1], age, sex, phoneNumber, hometown, checkKey]
+    console.log(params)
     try {
         const accountId = await signUp(params)
-        await sendMail(email, checkKey)
+        // await sendMail(email, checkKey)
         res.status(201).send(["201 Created", {
             code: 201,
             comment: "user ID was created",
-            id: accountId
+            insertId: accountId.insertId
         }])
     } catch(err) {
+        console.log(err)
         res.status(400).send(["400 Bad Request", {
             code: 400,
             comment: "Bad Request",
@@ -56,15 +60,15 @@ async function sendMail(email, checkKey) {
 
 function encrypter (password) {
     const random = crypto.randomBytes(10).toString('base64')
-    const result = crypto.createHash('sha512').update(result + random).digest('base64')
-    return password
+    const result = crypto.createHash('sha512').update(password + random).digest('base64')
+    return [result, random]
 }
 
 async function signUp(params) {
     return new Promise((resolve, reject) => {
-        mysqli.query("INSERT INTO store(id, password, name, email) VALUES (?, ?, ?, ?)", params, (err, data) => {
+        mysqli.query("INSERT INTO account(name, password, email, random, age, sex, phoneNumber, hometown, checkKey) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params, (err, data) => {
             if(err) reject(err)
-            else resolve(data.InsertId)
+            else resolve(data)
         })
     })
 }

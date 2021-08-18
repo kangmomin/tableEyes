@@ -14,9 +14,32 @@
     <button onclick="get()">get</button>
     <button onclick="del()">delete</button>
     <button onclick="patch()">patch</button>
+    <button onclick="login()">login</button>
+    <button onclick="signUp()">signUp</button>
 
     <div id="x"></div>
     <script>
+
+        function signUp() {
+            $.ajax({
+                url: "http://koldin.myddns.me:4004/sign-up",
+                type: 'post',
+                data: {
+                    name: "hello",
+                    password: "koldin",
+                    email: "momin108902@gmail.com",
+                    age: 12,
+                    sex: "male",
+                    phoneNumber: "01027729778",
+                    hometown: "부산광역시 해운대구 좌동 대림1차"
+                },
+                success: (data) => {
+                    console.log(data)
+                    document.querySelector("#x").innerHTML = data
+                }
+            })
+        }
+        
         function del() {
             const id = document.querySelector("#inp").value
             $.ajax({
