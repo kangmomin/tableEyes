@@ -52,8 +52,6 @@ function crypting(password, random) {
 }
 
 function checkPwd(account, pwd) {
-    console.log(account)
-    console.log(crypting(pwd, account.random))
     if(account.password != crypting(pwd, account.random)) return false
     else return true
 }

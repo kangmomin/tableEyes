@@ -13,6 +13,7 @@ app.post('/sign-up', async (req, res) => {
     const { password, name, email, age, sex, phoneNumber, hometown } = req.body
     const checkKey = crypto.randomBytes(20).toString('base64')
     const random = crypto.randomBytes(10).toString('base64')
+    console.log(random.toString(16))
     const encryptedPwd = encrypter(password, random)
 
     let params = [name, encryptedPwd, email, random, age, sex, phoneNumber, hometown, checkKey]
