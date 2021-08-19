@@ -23,10 +23,10 @@ app.patch('/store/personnel/:id', async (req, res) => {
         }])
     } catch(err) {
         console.log(err)
-        res.status(400).send(["Bad Request", {
+        res.status(400).send({
             code : 400,
             comment: "Bad Request"
-        }])
+        })
     }
 })
 

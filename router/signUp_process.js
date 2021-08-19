@@ -13,12 +13,11 @@ app.post('/sign-up', async (req, res) => {
     const { password, name, email, age, sex, phoneNumber, hometown } = req.body
     const checkKey = crypto.randomBytes(20).toString('base64')
     const random = crypto.randomBytes(10).toString('base64')
-    console.log(random.toString(16))
     const encryptedPwd = encrypter(password, random)
 
     let params = [name, encryptedPwd, email, random, age, sex, phoneNumber, hometown, checkKey]
-    console.log(params)
     try {
+        await overlapCheck(email, name, phoneNumber)
         const accountId = await signUp(params)
         // await sendMail(email, checkKey)
         res.status(201).send(["201 Created", {
@@ -28,13 +27,29 @@ app.post('/sign-up', async (req, res) => {
         }])
     } catch(err) {
         console.log(err)
-        res.status(400).send(["400 Bad Request", {
+        res.status(400).send({
             code: 400,
             comment: "Bad Request",
             errMsg: err
-        }])
+        })
     }
 })
+
+async function overlapCheck(email, name, phoneNumber) {
+    return new Promise((resolve, reject) => {
+        mysqli.query("SELECT * FROM account", (err, data) => {
+            if(err) reject(err)
+            for(data of data) {
+                if(
+                    email == data.email ||
+                    name == data.name ||
+                    phoneNumber == data.phoneNumber
+                ) reject("this account is already signed up")
+            }
+            resolve(true)
+        })
+    })
+}
 
 async function sendMail(email, checkKey) {
     let transporter = nodemailer.createTransport({

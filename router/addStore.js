@@ -27,9 +27,10 @@ app.post('/store', (req, res) => {
         }])
     } catch(err) {
         console.log(err)
-        return res.status(400).send(["HTTP/1.1 400 Bad Request", {
+        return res.status(400).send({
+            code: 400,
             massage: err
-        }])
+        })
     }
 })
 

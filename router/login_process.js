@@ -20,7 +20,9 @@ app.post('/login', async (req, res) => {
             req.session.id = account.id //master key
             res.status(200).send(["200 Request succesed", {
                 code: 200,
-                comment: "login success"
+                comment: "login success",
+                userId: account.id,
+                detail: account
             }])
         } else {
             errorRes(res, "PASSWORD")
@@ -38,12 +40,11 @@ function errorRes(res, errStr) {
         code = 404
         msg = "Not Found User"
     }
-    const mainMsg = `${code} ${msg}`
-    res.status(400).send([mainMsg, {
+    res.status(400).send({
         comment: `please check the '${errStr}'`,
         code: code,
         codeMsg: msg
-    }])
+    })
 }
 
 function crypting(password, random) {
