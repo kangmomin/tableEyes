@@ -14,8 +14,8 @@ app.put('/store/:id', async (req, res) => {
     } = req.body
     const category = JSON.stringify(req.body["category[]"])
     const params = [name, lat, lon, maxPersonnel, description, category, logo]
-    console.log(req.body)
-    const data = updateStore(id, params).catch(err => {
+    const parsedParams = parsing(params)
+    const data = updateStore(id, parsedParams).catch(err => {
         console.log(err)
         return res.status(405).send(["405 Method Not Allowed", {
             code : 405,
@@ -24,6 +24,14 @@ app.put('/store/:id', async (req, res) => {
     })
     res.status(200).send(["200 Done", { code : 200, data }])
 })
+
+function parsing(params) {
+    let result = new Array()
+    for (data of params) {
+        result.push(data.replace(/script+/g, 'div'))
+    }
+    return result
+}
 
 async function updateStore(id, params) {
     return new Promise((resolve, reject) => {
