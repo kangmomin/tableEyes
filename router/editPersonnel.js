@@ -11,14 +11,14 @@ app.patch('/store/personnel/:id', async (req, res) => {
     const { personnel } = req.body
     const id = req.params.id
     try {
-        const data = await patchDB(personnel)
+        const data = await patchDB(parser.parse(personnel))
         console.log(data)
         res.status(200).send(["200 successed", {
             code : 200,
             comment: "200 successed",
             detail: {
                 id: id,
-                personnel: personnel
+                personnel: personnel.replace(/script+/g, 'div')
             }
         }])
     } catch(err) {

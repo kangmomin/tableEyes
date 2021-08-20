@@ -18,7 +18,8 @@ app.post('/sign-up', async (req, res) => {
     let params = [name, encryptedPwd, email, random, age, sex, phoneNumber, hometown, checkKey]
     try {
         await overlapCheck(email, name, phoneNumber)
-        const accountId = await signUp(params)
+        const parsedParams = parsing(params)
+        const accountId = await signUp(parsedParams)
         // await sendMail(email, checkKey)
         res.status(201).send(["201 Created", {
             code: 201,
@@ -34,6 +35,14 @@ app.post('/sign-up', async (req, res) => {
         })
     }
 })
+
+function parsing(params) {
+    let result = new Array()
+    for (data of params) {
+        result.push(data.replace(/script+/g, 'div'))
+    }
+    return result
+}
 
 async function overlapCheck(email, name, phoneNumber) {
     return new Promise((resolve, reject) => {

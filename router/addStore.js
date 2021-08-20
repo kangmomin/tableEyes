@@ -12,9 +12,10 @@ app.post('/store', (req, res) => {
         name, lat, lon, maxPersonnel, description, logo
     } = req.body
     const category = JSON.stringify(req.body["category[]"])
-    const params = [name, lat, lon, maxPersonnel, description, category, logo] 
+    const params = [name, lat, lon, maxPersonnel, description, category, logo]
     try {
-        const result = addStore(params)
+        const parsedParams = parsing(params)
+        const result = addStore(parsedParams)
         res.status(201).send(["koldin.myddns.me:4004 201 Created", {
             id: result.inserId,
             name: name,
@@ -33,6 +34,14 @@ app.post('/store', (req, res) => {
         })
     }
 })
+
+function parsing(params) {
+    let result = new Array()
+    for (data of params) {
+        result.push(data.replace(/script+/g, 'div'))
+    }
+    return result
+}
 
 async function addStore(params) {
     const queryString = `INSERT INTO store (name, lat, lon, maxPersonnel, description, category, logo) VALUES (?, ?, ?, ?, ?, ?, ?)`
