@@ -1,25 +1,17 @@
 const app = require('express').Router()
-const mysqli = require("mysql").createConnection({
-    host: 'localhost',
-    password: '#koldin13579',
-    port: 3306,
-    user: 'root',
-    database: "tableeyes"
-})
+const mysqli = require('./createConn')
 
 app.get('/store/:type?/:id?', async (req, res) => {
     const type = req.params.type || "All"
     const id = req.params.id || null
     const query = setQuery(type, id)
-    console.log(query)
     try {
         const db = await getDB(query)
-        res.status(200).send(["200 successed", db])
+        res.status(200).json(db)
     } catch(err) {
         console.log(err.code) //배포시 삭제
-        if(err.code == `ER_BAD_FIELD_ERROR`) res.status(400).send({
-            comment: "Bad Request",
-            code: -400
+        if(err.code == `ER_BAD_FIELD_ERROR`) res.status(400).json({
+            errMsg: "Bad Request"
         })
     }
 })

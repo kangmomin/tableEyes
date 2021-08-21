@@ -1,27 +1,34 @@
 const app = require('express').Router()
-const mysqli = require('mysql').createConnection({
-    host : '127.0.0.1',
-    user: 'root',
-    password: "#koldin13579",
-    database: "tableEyes",
-    port: 3306
-})
+const mysqli = require('./createConn')
 
 app.delete('/store', async (req, res) => {
     const { id } = req.body
-    await delStore(id).catch(err => {
-        console.log(err)
-        res.send(['405 Method Not Allowd', {
-            code : 405,
-            comment: "Method Not Allowed"
-        }])
-    })
+    const userId = req.session.id
 
-    res.status(204).send(["204 No Content", {
-        code: 204,
-        comment: "No Content"
-    }])
+    try {
+        await matchOwner(id, userId)
+        await delStore(id)
+        res.status(204).json({
+            massage: "No Content"
+        })
+    } catch(err) {
+        console.log(err)
+        res.status(405).json({
+            errMsg: "Method Not Allowed"
+        })
+    }
+
 })
+
+async function matchOwner(id, userId) {
+    return new Promise((resolve, reject) => {
+        mysqli.query("SELECT ownerId FROM store WHERE id=?", [id], (err, owner) => {
+            if(owner !== userId) reject("unmatch")
+            if(err) reject(err)
+            resolve("match")
+        })
+    })
+}
 
 async function delStore(id) {
     return new Promise ((resolve, reject) => {

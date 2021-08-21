@@ -1,31 +1,19 @@
 const app = require('express').Router()
-const mysqli = require('mysql').createConnection({
-    host : "127.0.0.1",
-    user: "root",
-    password: "#koldin13579",
-    database: "tableEyes",
-    port: 3306
-})
+const mysqli = require('./createConn')
 
 app.patch('/store/personnel/:id', async (req, res) => {
     const { personnel } = req.body
     const id = req.params.id
     try {
         const data = await patchDB(parser.parse(personnel))
-        console.log(data)
-        res.status(200).send(["200 successed", {
-            code : 200,
-            comment: "200 successed",
-            detail: {
-                id: id,
-                personnel: personnel.replace(/script+/g, 'div')
-            }
-        }])
+        res.status(200).send({
+            id: id,
+            personnel: personnel
+        })
     } catch(err) {
         console.log(err)
-        res.status(400).send({
-            code : 400,
-            comment: "Bad Request"
+        res.status(400).json({
+            errMsg: "Bad Request"
         })
     }
 })

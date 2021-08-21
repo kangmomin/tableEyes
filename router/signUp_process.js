@@ -1,13 +1,7 @@
 const app = require('express').Router()
 const crypto = require('crypto')
 const nodemailer = require('nodemailer')
-const mysqli = require('mysql').createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "#koldin13579",
-    database: "tableEyes",
-    port: 3306
-})
+const mysqli = require('./createConn')
 
 app.post('/sign-up', async (req, res) => {
     const { password, name, email, age, sex, phoneNumber, hometown } = req.body
@@ -21,17 +15,15 @@ app.post('/sign-up', async (req, res) => {
         const parsedParams = parsing(params)
         const accountId = await signUp(parsedParams)
         // await sendMail(email, checkKey)
-        res.status(201).send(["201 Created", {
-            code: 201,
-            comment: "user ID was created",
+        res.status(201).json({
+            massage: "user ID was created",
             insertId: accountId.insertId
-        }])
+        })
     } catch(err) {
         console.log(err)
-        res.status(400).send({
-            code: 400,
-            comment: "Bad Request",
-            errMsg: err
+        res.status(400).json({
+            errMsg: "Bad Request",
+            error: err
         })
     }
 })

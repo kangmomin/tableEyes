@@ -1,12 +1,6 @@
 const app = require('express').Router()
 const crypto = require('crypto')
-const mysqli = require('mysql').createConnection({
-    host: '127.0.0.1',
-    user: "root",
-    password: "#koldin13579",
-    database: "tableEyes",
-    port: 3306
-})
+const mysqli = require('./createConn')
 
 app.post('/login', async (req, res) => {
     const { id, password } = req.body
@@ -18,12 +12,11 @@ app.post('/login', async (req, res) => {
         const matchPwd = checkPwd(account, password) //check matched inp password & account password, it return boolean
         if(matchPwd) {
             req.session.id = account.id //master key
-            res.status(200).send(["200 Request succesed", {
-                code: 200,
-                comment: "login success",
+            res.status(200).json({
+                massage: "login success",
                 userId: account.id,
                 detail: account
-            }])
+            })
         } else {
             errorRes(res, "PASSWORD")
         }
@@ -34,16 +27,12 @@ app.post('/login', async (req, res) => {
 })
 
 function errorRes(res, errStr) {
-    let code = 400
     let msg = "Bad Request"
     if(errStr == "ID") {
-        code = 404
         msg = "Not Found User"
     }
-    res.status(400).send({
-        comment: `please check the '${errStr}'`,
-        code: code,
-        codeMsg: msg
+    res.status(400).json({
+        errMsg: `${msg}\nplease check the '${errStr}'`
     })
 }
 

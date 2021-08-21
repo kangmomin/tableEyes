@@ -58,6 +58,6 @@ app.post('/store', addStore)
 app.post('/login', login_process)
 app.post('/sign-up', singUp_process)
 
-app.get('*', (req, res) => res.status(404).send("NOT FOUND PAGE"))
+app.get('*', (req, res) => res.status(404).json({ massage:"Not Found Page" }))
 
 app.listen(port, () => console.log(`server is running on port ${port}`))

@@ -1,22 +1,20 @@
 const app = require('express')()
-const mysqli = require('mysql').createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "#koldin13579",
-    database: "tableeyes",
-    port: 3306
-})
+const mysqli = require('./createConn')
 
 app.post('/store', (req, res) => {
+    const owner = req.session.id
+    if(owner == undefined) return res.status(401).json({
+        errMsg: "need login"
+    })
     const {
         name, lat, lon, maxPersonnel, description, logo
     } = req.body
     const category = JSON.stringify(req.body["category[]"])
-    const params = [name, lat, lon, maxPersonnel, description, category, logo]
+    const params = [owner, name, lat, lon, maxPersonnel, description, category, logo]
     try {
         const parsedParams = parsing(params)
         const result = addStore(parsedParams)
-        res.status(201).send(["koldin.myddns.me:4004 201 Created", {
+        res.status(201).send({
             id: result.inserId,
             name: name,
             description: description,
@@ -25,12 +23,11 @@ app.post('/store', (req, res) => {
             lat: lat,
             lon: lon,
             category: category
-        }])
+        })
     } catch(err) {
         console.log(err)
-        return res.status(400).send({
-            code: 400,
-            massage: err
+        return res.status(400).json({
+            errMsg: err
         })
     }
 })
