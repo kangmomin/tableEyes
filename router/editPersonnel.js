@@ -4,19 +4,37 @@ const mysqli = require('./createConn')
 app.patch('/store/personnel/:id', async (req, res) => {
     const { personnel } = req.body
     const id = req.params.id
+    const userId = req.session.id
     try {
-        const data = await patchDB(parser.parse(personnel))
+        await matchOwner(userId, id)
+        await patchDB(personnel)
         res.status(200).send({
             id: id,
             personnel: personnel
         })
     } catch(err) {
         console.log(err)
-        res.status(400).json({
-            errMsg: "Bad Request"
+        let errCode = 400
+        let errMsg = "Bad Request"
+        if(err == "forbidden") {
+            errMsg = "forbidden"
+            errCode = 402
+        }
+        res.status(errCode).json({
+            errMsg: errMsg
         })
     }
 })
+
+async function matchOwner(userId, id) {
+    return new Promise((resolve, reject) => {
+        mysqli.query("SELECT ownerId FROM store WHERE id=?", [id], (err, data) => {
+            if(userId !== data[0].ownerId) reject('forbidden')
+            else if(err) reject(err)
+            else resolve(data)
+        })
+    })
+}
 
 async function patchDB(personnel, id) {
     return new Promise((resolve, reject) => {
