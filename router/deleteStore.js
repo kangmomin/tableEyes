@@ -13,8 +13,13 @@ app.delete('/store', async (req, res) => {
         })
     } catch(err) {
         console.log(err)
-        res.status(405).json({
-            errMsg: "Method Not Allowed"
+        let errMsg = "Method Not Allowed"
+        let errCode = 405
+        if(err === "forbidden") {
+            errCode = 403
+        }
+        res.status(errCode).json({
+            errMsg
         })
     }
 
@@ -23,9 +28,9 @@ app.delete('/store', async (req, res) => {
 async function matchOwner(id, userId) {
     return new Promise((resolve, reject) => {
         mysqli.query("SELECT ownerId FROM store WHERE id=?", [id], (err, owner) => {
-            if(owner !== userId) reject("unmatch")
-            if(err) reject(err)
-            resolve("match")
+            if(userId !== data[0].ownerId) reject('forbidden')
+            else if(err) reject(err)
+            else resolve(owner[0].ownerId)
         })
     })
 }

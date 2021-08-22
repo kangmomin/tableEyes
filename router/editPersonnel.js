@@ -18,10 +18,10 @@ app.patch('/store/personnel/:id', async (req, res) => {
         let errMsg = "Bad Request"
         if(err == "forbidden") {
             errMsg = "forbidden"
-            errCode = 402
+            errCode = 403
         }
         res.status(errCode).json({
-            errMsg: errMsg
+            errMsg
         })
     }
 })
