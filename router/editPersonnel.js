@@ -4,7 +4,7 @@ const mysqli = require('./createConn')
 app.patch('/store/personnel/:id', async (req, res) => {
     const { personnel } = req.body
     const id = req.params.id
-    const userId = req.session.id
+    const userId = req.session._id
     try {
         await matchOwner(userId, id)
         await patchDB(personnel)

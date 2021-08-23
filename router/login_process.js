@@ -11,7 +11,7 @@ app.post('/login', async (req, res) => {
 
         const matchPwd = checkPwd(account, password) //check matched inp password & account password, it return boolean
         if(matchPwd) {
-            req.session.id = account.id //master key
+            req.session._id = account.id //master key
             res.status(200).json({
                 massage: "login success",
                 userId: account.id,

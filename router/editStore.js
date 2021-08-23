@@ -1,6 +1,6 @@
 const app = require('express').Router()
 const mysqli = require('./createConn')
-
+//유저 인증 추가
 app.put('/store/:id', async (req, res) => {
     const id = req.params.id
     const {
@@ -23,7 +23,8 @@ app.put('/store/:id', async (req, res) => {
 function parsing(params) {
     let result = new Array()
     for (data of params) {
-        result.push(data.replace(/script+/g, 'div'))
+        if(typeof data === 'string') data.replace('script', 'div')
+        result.push(data)
     }
     return result
 }

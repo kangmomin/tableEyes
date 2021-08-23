@@ -14,6 +14,7 @@ const deleteStore = require('./router/deleteStore')
 const editPersonnel = require('./router/editPersonnel')
 const login_process = require('./router/login_process')
 const singUp_process = require('./router/signUp_process')
+const test = require('./router/test')
 
 const sessionStore = new MySQLStore({
     host: "127.0.0.1",
@@ -36,7 +37,8 @@ app.use(
 app.set('views', __dirname + '/public')
 app.set('view engine','ejs')
 app.engine('html', require('ejs').renderFile)
-app.use(bp.urlencoded({ extended: false }))
+app.use(bp.urlencoded({ limit: '1gb', extended: false }))
+app.use(bp.json())
 app.use(cp())
 app.use(cors({
     origin: true,
@@ -47,6 +49,7 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', (req, res) => res.render('/index.html'))
 app.get('/store/:type?/:id?', storeRequest)
+app.get('/test', test)
 
 app.put('/store/:id', editStore)
 

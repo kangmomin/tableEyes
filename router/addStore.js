@@ -2,27 +2,28 @@ const app = require('express')()
 const mysqli = require('./createConn')
 
 app.post('/store', (req, res) => {
-    const owner = req.session.id
-    if(owner == undefined) return res.status(401).json({
+    const ownerId = req.session._id
+    if(ownerId == undefined) return res.status(401).json({
         errMsg: "need login"
     })
     const {
         name, lat, lon, maxPersonnel, description, logo
     } = req.body
     const category = JSON.stringify(req.body["category[]"])
-    const params = [owner, name, lat, lon, maxPersonnel, description, category, logo]
+    const params = [name, ownerId, lat, lon, maxPersonnel, description, category, logo]
     try {
         const parsedParams = parsing(params)
         const result = addStore(parsedParams)
         res.status(201).send({
             id: result.inserId,
-            name: name,
-            description: description,
-            maxPersonnel: maxPersonnel,
-            logo: logo,
-            lat: lat,
-            lon: lon,
-            category: category
+            ownerId,
+            name,
+            description,
+            maxPersonnel,
+            logo,
+            lat,
+            lon,
+            category
         })
     } catch(err) {
         console.log(err)
@@ -35,13 +36,14 @@ app.post('/store', (req, res) => {
 function parsing(params) {
     let result = new Array()
     for (data of params) {
-        result.push(data.replace(/script+/g, 'div'))
+        if(typeof data === 'string') data.replace('script', 'div')
+        result.push(data)
     }
     return result
 }
 
 async function addStore(params) {
-    const queryString = `INSERT INTO store (name, lat, lon, maxPersonnel, description, category, logo) VALUES (?, ?, ?, ?, ?, ?, ?)`
+    const queryString = `INSERT INTO store (name, ownerId, lat, lon, maxPersonnel, description, category, logo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
     return new Promise((resolve, reject) => {
         mysqli.query(queryString, params, (err, data) => {
             if (err) reject(err)

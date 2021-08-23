@@ -10,6 +10,7 @@ app.post('/sign-up', async (req, res) => {
     const encryptedPwd = encrypter(password, random)
 
     let params = [name, encryptedPwd, email, random, age, sex, phoneNumber, hometown, checkKey]
+    
     try {
         await overlapCheck(email, name, phoneNumber)
         const parsedParams = parsing(params)
@@ -31,7 +32,8 @@ app.post('/sign-up', async (req, res) => {
 function parsing(params) {
     let result = new Array()
     for (data of params) {
-        result.push(data.replace(/script+/g, 'div'))
+        if(typeof data === 'string') data.replace('script', 'div')
+        result.push(data)
     }
     return result
 }
