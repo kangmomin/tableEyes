@@ -15,6 +15,7 @@ const editPersonnel = require('./router/editPersonnel')
 const login_process = require('./router/login_process')
 const singUp_process = require('./router/signUp_process')
 const test = require('./router/test')
+const testLogin = require('./router/testLogin')
 
 const sessionStore = new MySQLStore({
     host: "127.0.0.1",
@@ -30,10 +31,11 @@ app.use(
         secret: "session_cookie_secret",
         store: sessionStore,
         resave: false,
-        saveUninitialized: false,
+        saveUninitialized: false
     })
 )
 
+app.set('trust proxy', 1)
 app.set('views', __dirname + '/public')
 app.set('view engine','ejs')
 app.engine('html', require('ejs').renderFile)
@@ -49,6 +51,7 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', (req, res) => res.render('/index.html'))
 app.get('/store/:type?/:id?', storeRequest)
+app.get('/testLogin', testLogin)
 app.get('/test', test)
 
 app.put('/store/:id', editStore)

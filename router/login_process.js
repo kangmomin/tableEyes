@@ -11,7 +11,8 @@ app.post('/login', async (req, res) => {
 
         const matchPwd = checkPwd(account, password) //check matched inp password & account password, it return boolean
         if(matchPwd) {
-            req.session._id = account.id //master key
+            req.session.userId = account.id //master key
+            req.session.save()
             res.status(200).json({
                 massage: "login success",
                 userId: account.id,
@@ -32,7 +33,7 @@ function errorRes(res, errStr) {
         msg = "Not Found User"
     }
     res.status(400).json({
-        errMsg: `${msg}\nplease check the '${errStr}'`
+        errMsg: `${msg} | please check the '${errStr}'`
     })
 }
 

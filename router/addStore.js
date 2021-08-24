@@ -2,9 +2,14 @@ const app = require('express')()
 const mysqli = require('./createConn')
 
 app.post('/store', (req, res) => {
-    const ownerId = req.session._id
+    const ownerId = req.session.userId
+    console.log(req.session.userId)
+    console.log(req.sessionID)
     if(ownerId == undefined) return res.status(401).json({
-        errMsg: "need login"
+        errMsg: "need login",
+        detail: {
+            ownerId
+        }
     })
     const {
         name, lat, lon, maxPersonnel, description, logo
