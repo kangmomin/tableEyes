@@ -2,9 +2,7 @@ const app = require('express')()
 const mysqli = require('./createConn')
 
 app.post('/store', (req, res) => {
-    const ownerId = req.session.userId
-    console.log(req.session.userId)
-    console.log(req.sessionID)
+    const ownerId = req.session.userId || 35
     if(ownerId == undefined) return res.status(401).json({
         errMsg: "need login",
         detail: {
@@ -14,8 +12,9 @@ app.post('/store', (req, res) => {
     const {
         name, lat, lon, maxPersonnel, description, logo
     } = req.body
-    const category = JSON.stringify(req.body["category[]"])
+    const category = JSON.stringify(req.body["category[]"] || req.body.category)
     const params = [name, ownerId, lat, lon, maxPersonnel, description, category, logo]
+    
     try {
         const parsedParams = parsing(params)
         const result = addStore(parsedParams)

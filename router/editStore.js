@@ -2,11 +2,11 @@ const app = require('express').Router()
 const mysqli = require('./createConn')
 //유저 인증 추가
 app.put('/store/:id', async (req, res) => {
-    const id = req.params.id
+    const id = req.params.id || 35
     const {
         name, lat, lon, maxPersonnel, description, logo
     } = req.body
-    const category = JSON.stringify(req.body["category[]"])
+    const category = JSON.stringify(req.body["category[]"] || req.body.category)
     const params = [name, lat, lon, maxPersonnel, description, category, logo]
     const parsedParams = parsing(params)
     try {

@@ -57,8 +57,7 @@
         function del() {
             const id = document.querySelector("#inp").value
             $.ajax({
-                url: "http://koldin.myddns.me:4004/store",
-                data: { id: id },
+                url: "http://koldin.myddns.me:4004/store/"+id,
                 type: "delete",
                 success: (data) => {
                     document.querySelector("#x").innerHTML = data
@@ -86,11 +85,8 @@
         function patch() {
             const id = document.querySelector("#inp").value
             $.ajax({
-                url: "http://koldin.myddns.me:4004/store/personnel/" + id,
-                type: 'patch',
-                data: {
-                    personnel: 10
-                }
+                url: `http://koldin.myddns.me:4004/store/personnel/${id}/10`,
+                type: 'patch'
             })
         }
 

@@ -1,13 +1,13 @@
 const app = require('express').Router()
 const mysqli = require('./createConn')
 
-app.patch('/store/personnel/:id', async (req, res) => {
-    const { personnel } = req.body
+app.patch('/store/personnel/:id/:count', async (req, res) => {
+    const personnel = req.params.count
     const id = req.params.id
-    const userId = req.session._id
+    const userId = req.session._id || 35
     try {
         await matchOwner(userId, id)
-        await patchDB(personnel)
+        await patchDB(personnel, id)
         res.status(200).send({
             id: id,
             personnel: personnel
@@ -29,8 +29,8 @@ app.patch('/store/personnel/:id', async (req, res) => {
 async function matchOwner(userId, id) {
     return new Promise((resolve, reject) => {
         mysqli.query("SELECT ownerId FROM store WHERE id=?", [id], (err, data) => {
-            if(userId !== data[0].ownerId) reject('forbidden')
-            else if(err) reject(err)
+            if(err) reject(err)
+            else if(userId !== data[0].ownerId) reject('forbidden')
             else resolve(data)
         })
     })

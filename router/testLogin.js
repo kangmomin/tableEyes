@@ -1,19 +1,19 @@
 const app = require('express').Router()
-const axios = require('axios')
+const fetch = require('node-fetch')
 
 app.get('/testLogin', (req, res) => {
-    axios.post(
-        "http://koldin.myddns.me:4004/login",
-        {
-            id: "heoshin-test3",
-            password: "1234"
-        },
-        {
-            withCredentials: true
-        }
-        ).then(() => {
-            res.send("hello World")
-        })
+    const data = {
+        id: "heoshin-test3",
+        password: "1234"
+    }
+    fetch("http://koldin.myddns.me:4004/login", {
+        method: 'post',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+        credentials: "same-origin"
+    }).then(() => {
+        res.send("hello World")
+    })
 })
 
 module.exports = app

@@ -1,10 +1,9 @@
 const app = require('express').Router()
 const mysqli = require('./createConn')
 
-app.delete('/store', async (req, res) => {
-    const { id } = req.body
-    const userId = req.session._id
-    console.log(userId)
+app.delete('/store/:id', async (req, res) => {
+    const id = req.params.id
+    const userId = req.session._id || 35
     
     if(userId === undefined) return res.status(403).send({
         errMsg: 'Forbidden'
@@ -32,10 +31,10 @@ app.delete('/store', async (req, res) => {
 
 async function matchOwner(id, userId) {
     return new Promise((resolve, reject) => {
-        mysqli.query("SELECT ownerId FROM store WHERE id=?", [id], (err, owner) => {
-            if(userId !== owner[0].ownerId) reject('Unauthorized')
-            else if(owner.length < 1) reject("Not Found")
+        mysqli.query("SELECT ownerId FROM store WHERE id=?;", [id], (err, owner) => {
+            if(owner.length < 1) reject("Not Found")
             else if(err) reject(err)
+            else if(userId !== owner[0].ownerId) reject('Unauthorized')
             else resolve(owner[0].ownerId)
         })
     })
