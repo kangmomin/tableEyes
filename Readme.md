@@ -110,3 +110,13 @@
         starCoutn: Number = 별점
     }
     ```
+
++ 리뷰 가져오기
+    ```
+    link = /review/:storeId
+    Method = GET
+
+    Params = {
+        storeId: Number = 매장 아이디
+    }
+    ```

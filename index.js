@@ -17,6 +17,7 @@ const singUp_process = require('./router/signUp_process')
 const test = require('./router/test')
 const testLogin = require('./router/testLogin')
 const addReview = require('./router/addReview')
+const reviewRequest = require('./router/reviewRequest')
 
 app.use(express.json())
 app.set('views', __dirname + '/public')
@@ -47,6 +48,7 @@ app.get('/', (req, res) => res.render('/index.html'))
 app.get('/store/:type?/:id?', storeRequest)
 app.get('/testLogin', testLogin)
 app.get('/test', test)
+app.get('/review/:storeId', reviewRequest)
 
 app.put('/store/:id', editStore)
 

@@ -45,7 +45,7 @@ function errSend(res, errMsg, errCode) {
 
 async function getStar(storeId) {
     return new Promise((resolve, reject) => {
-        mysqli.query("SELECT star, starCount FROM store WHERE id=?", [storeId], (err, data) => {
+        mysqli.query("SELECT (star, starCount) FROM store WHERE id=?", [storeId], (err, data) => {
             if(err) reject(err)
             else if(data === []) reject(404)
             else if(data) resolve({
