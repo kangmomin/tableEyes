@@ -1,12 +1,12 @@
 # TableEyes API
 + 매장 정보 가져오기
     ```
-    link = /store/:type/:id
+    link = /store/:type?/:sort?/:id?
     Method = GET
 
     Params = {
         type: String {
-            id, ownerId, name, star, starCount,
+            ALL, id, ownerId, name, star, starCount,
             lat, lon, maxPersonnel, nowPersonnel,
             isOpen, description, category, logo,
             waitingState
@@ -26,9 +26,9 @@
         name: String
         password: String
         email: String
-        age: Number<>
+        age: Number
         sex: String = male || female
-        phoneNumber: Number<>
+        phoneNumber: Number
         hometown: String
     }
     ```
@@ -52,7 +52,7 @@
     Data = {
         name: String
         desription: String
-        maxPersonnel: Number<>
+        maxPersonnel: Number
         lat: Number<float>
         lon: Number<float>
         category: String[]
@@ -93,5 +93,20 @@
     
     Params = {
         id: Number = store id
+    }
+    ```
+
++ 리뷰 등록
+    ```
+    link = /review/:id
+    Method = POST
+
+    Params = {
+        id: Number = store id
+    }
+
+    Data = {
+        description: String
+        starCoutn: Number = 별점
     }
     ```

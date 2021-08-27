@@ -16,6 +16,7 @@ const login_process = require('./router/login_process')
 const singUp_process = require('./router/signUp_process')
 const test = require('./router/test')
 const testLogin = require('./router/testLogin')
+const addReview = require('./router/addReview')
 
 app.use(express.json())
 app.set('views', __dirname + '/public')
@@ -56,6 +57,7 @@ app.delete('/store/:id', deleteStore)
 app.post('/store', addStore)
 app.post('/login', login_process)
 app.post('/sign-up', singUp_process)
+app.post('/review/:storeId', addReview)
 
 app.get('*', (req, res) => res.status(404).json({ massage:"Not Found Page" }))
 

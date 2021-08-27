@@ -1,12 +1,13 @@
 const app = require('express').Router()
 const mysqli = require('./createConn')
 
-app.get('/store/:type?/:id?', async (req, res) => {
+app.get('/store/:type?/:sort?/:id?', async (req, res) => {
     const type = req.params.type || "All"
     const id = req.params.id || null
     const query = setQuery(type, id)
     try {
         const db = await getDB(query)
+        sorter(db)
         res.status(200).json(db)
     } catch(err) {
         console.log(err.code) //배포시 삭제
