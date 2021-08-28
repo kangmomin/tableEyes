@@ -5,7 +5,7 @@ app.delete('/store/:id', async (req, res) => {
     const id = req.params.id
     const userId = req.session._id || 35
     
-    if(userId === undefined) return res.status(403).send({
+    if(userId === undefined) return res.status(403).json({
         errMsg: 'Forbidden'
     })
     try {

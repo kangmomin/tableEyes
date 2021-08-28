@@ -120,3 +120,17 @@
         storeId: Number = 매장 아이디
     }
     ```
+
++ 정렬
+    ```
+    link = /sort/:mode
+    Method = GET
+
+    Params = {
+        mode: String = personnel, location, star, name
+    }
+
+    Data = {
+        data: JSON = requestStore 값
+    }
+    ```

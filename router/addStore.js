@@ -18,7 +18,7 @@ app.post('/store', (req, res) => {
     try {
         const parsedParams = parsing(params)
         const result = addStore(parsedParams)
-        res.status(201).send({
+        res.status(201).json({
             id: result.inserId,
             ownerId,
             name,

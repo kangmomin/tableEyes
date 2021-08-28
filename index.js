@@ -18,6 +18,7 @@ const test = require('./router/test')
 const testLogin = require('./router/testLogin')
 const addReview = require('./router/addReview')
 const reviewRequest = require('./router/reviewRequest')
+const sorter = require('./router/sorter')
 
 app.use(express.json())
 app.set('views', __dirname + '/public')
@@ -49,6 +50,7 @@ app.get('/store/:type?/:id?', storeRequest)
 app.get('/testLogin', testLogin)
 app.get('/test', test)
 app.get('/review/:storeId', reviewRequest)
+app.get('/sort', sorter)
 
 app.put('/store/:id', editStore)
 
