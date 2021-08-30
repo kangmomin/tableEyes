@@ -19,6 +19,7 @@ const testLogin = require('./router/testLogin')
 const addReview = require('./router/addReview')
 const reviewRequest = require('./router/reviewRequest')
 const sorter = require('./router/sorter')
+const errorLogger = require('./router/errorLogger')
 
 app.use(express.json())
 app.set('views', __dirname + '/public')
@@ -44,6 +45,8 @@ app.use(session({
 }))
 
 app.use(express.static(__dirname + '/public'))
+
+app.use(errorLogger)
 
 app.get('/', (req, res) => res.render('/index.html'))
 app.get('/store/:type?/:id?', storeRequest)
