@@ -50,7 +50,6 @@ app.get('/store/:type?/:id?', storeRequest)
 app.get('/testLogin', testLogin)
 app.get('/test', test)
 app.get('/review/:storeId', reviewRequest)
-app.get('/sort', sorter)
 
 app.put('/store/:id', editStore)
 
@@ -62,6 +61,7 @@ app.post('/store', addStore)
 app.post('/login', login_process)
 app.post('/sign-up', singUp_process)
 app.post('/review/:storeId', addReview)
+app.post('/sort/:mode', sorter)
 
 app.get('*', (req, res) => res.status(404).json({ massage:"Not Found Page" }))
 

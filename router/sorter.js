@@ -1,17 +1,21 @@
 const app = require('express').Router()
 
-app.get('/sort/:mode', (req, res) => {
+app.post('/sort/:mode', (req, res) => {
     const mode = req.params.mode
-    const data = req.body.data
+    const decodedUrl = decodeURIComponent(req.query)
+    const data = JSON.parse(decodedUrl)
+
+    console.log(data)
+
     if(
-        mode !== "name" ||
-        mode !== "star" ||
-        mode !== "location" ||
-        mode !== "personnel"
+        mode !== "name" &&
+        mode !== "star" &&
+        mode !== "location" &&
+        mode !== "nowPersonnel"
     ) return res.status(405).json({
         message: "Method Not Allowed",
         detail: {
-            Methods: ["name", "star", "location", "personnel"]
+            Methods: ["name", "star", "location", "nowPersonnel"]
         }
     })
     const result = data.sort((a, b) => {

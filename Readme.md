@@ -1,7 +1,7 @@
 # TableEyes API
 + 매장 정보 가져오기
     ```
-    link = /store/:type?/:sort?/:id?
+    link = /store/:type?/:id?
     Method = GET
 
     Params = {
@@ -124,13 +124,18 @@
 + 정렬
     ```
     link = /sort/:mode
-    Method = GET
+    Method = POST
 
     Params = {
         mode: String = personnel, location, star, name
     }
 
     Data = {
-        data: JSON = requestStore 값
+        data: JSON = requestStore 값 + location(매장과 유저간의 거리)
+    }
+    
+    message: "Method Not Allowed",
+    detail: {
+        Methods: ["name", "star", "location", "personnel"]
     }
     ```
