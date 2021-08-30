@@ -92,8 +92,8 @@
 
         function get() {
             let id = document.querySelector("#inp").value
-            let link = "http://koldin.myddns.me:4004/store/All/"
-            if(id != 0) link += id
+            let link = "http://koldin.myddns.me:4004/store"
+            if(id != 0) link += `/All/${id}`
 
             $.ajax({
                 url: link,
