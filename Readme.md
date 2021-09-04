@@ -139,3 +139,15 @@
         Methods: ["name", "star", "location", "personnel"]
     }
     ```
+
++ 이미지 업로드
+    ```
+    link = /image-upload
+    Method = POST
+
+    Data = {
+        img: "file"
+    }
+
+    이미지는 png, jpg, gif, jpeg확장자만 인정합니다.
+    ```
