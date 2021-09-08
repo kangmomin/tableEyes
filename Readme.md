@@ -13,6 +13,7 @@
         }
 
         id: Number
+        
         category: String
     }
     ```
