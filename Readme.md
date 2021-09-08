@@ -1,18 +1,19 @@
 # TableEyes API
 + 매장 정보 가져오기
     ```
-    link = /store/:type?/:id?
+    link = /store/:type?/id?/:id?/category?/:category?
     Method = GET
 
     Params = {
         type: String {
-            ALL, id, ownerId, name, star, starCount,
+            id, ownerId, name, star, starCount,
             lat, lon, maxPersonnel, nowPersonnel,
             isOpen, description, category, logo,
             waitingState
         }
 
         id: Number
+        category: String
     }
     ```
 

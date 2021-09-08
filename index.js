@@ -20,7 +20,6 @@ const addReview = require('./router/addReview')
 const reviewRequest = require('./router/reviewRequest')
 const sorter = require('./router/sorter')
 const errorLogger = require('./router/errorLogger')
-const imgUpload = require('./router/imgUploader')
 
 app.use(express.json())
 app.set('views', __dirname + '/public')
@@ -50,9 +49,8 @@ app.use(express.static(__dirname + '/public'))
 app.use(errorLogger)
 
 app.get('/', (req, res) => res.render('/index.html'))
-app.get('/store/:type?/:id?', storeRequest)
+app.get('/store/:type?/id?/:id?/category?/:category?', storeRequest)
 app.get('/testLogin', testLogin)
-app.get('/test', test)
 app.get('/review/:storeId', reviewRequest)
 
 app.put('/store/:id', editStore)
@@ -66,7 +64,6 @@ app.post('/login', login_process)
 app.post('/sign-up', singUp_process)
 app.post('/review/:storeId', addReview)
 app.post('/sort/:mode', sorter)
-app.post('/image-upload', imgUpload)
 
 app.get('*', (req, res) => res.status(404).json({ massage:"Not Found Page" }))
 
