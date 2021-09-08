@@ -1,7 +1,7 @@
 # TableEyes API
 + 매장 정보 가져오기
     ```
-    link = /store/:type?/id?/:id?/category?/:category?
+    link = /store/type/:type?/id/:id?/category/:category?
     Method = GET
 
     Params = {
@@ -13,7 +13,7 @@
         }
 
         id: Number
-        
+
         category: String
     }
     ```

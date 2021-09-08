@@ -49,7 +49,7 @@ app.use(express.static(__dirname + '/public'))
 app.use(errorLogger)
 
 app.get('/', (req, res) => res.render('/index.html'))
-app.get('/store/:type?/id?/:id?/category?/:category?', storeRequest)
+app.get('/store/type/:type/id/:id?/category/:category?', storeRequest)
 app.get('/testLogin', testLogin)
 app.get('/review/:storeId', reviewRequest)
 
