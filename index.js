@@ -14,7 +14,6 @@ const deleteStore = require('./router/deleteStore')
 const editPersonnel = require('./router/editPersonnel')
 const login_process = require('./router/login_process')
 const singUp_process = require('./router/signUp_process')
-const test = require('./router/test')
 const testLogin = require('./router/testLogin')
 const addReview = require('./router/addReview')
 const reviewRequest = require('./router/reviewRequest')
@@ -48,8 +47,7 @@ app.use(express.static(__dirname + '/public'))
 
 app.use(errorLogger)
 
-app.get('/', (req, res) => res.render('/index.html'))
-app.get('/store/type/:type/id/:id?/category/:category?', storeRequest)
+app.get('/store/type/:type?/id/:id?/category/:category?', storeRequest)
 app.get('/testLogin', testLogin)
 app.get('/review/:storeId', reviewRequest)
 

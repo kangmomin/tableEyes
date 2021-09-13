@@ -5,7 +5,7 @@ app.get('/store/type/:type?/id/:id?/category/:category?', async (req, res) => {
     const type = req.params.type
     const id = req.params.id
     const category = req.params.category
-    const query = setQuery(type, id, category)
+    const query = setQuery(type, id)
     console.log(query)
     try {
         let db = await getDB(query)
