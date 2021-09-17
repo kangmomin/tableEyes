@@ -3,7 +3,7 @@ const mysqli = require('./createConn')
 
 app.delete('/store/:id', async (req, res) => {
     const id = req.params.id
-    const userId = req.session._id
+    const userId = req.session.userId
     
     if(userId === undefined) return res.status(403).json({
         errMsg: 'Forbidden'
