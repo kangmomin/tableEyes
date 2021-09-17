@@ -25,6 +25,7 @@ app.post('/store', (req, res) => {
         waitingState: 0,
         isOpen: 0,
     }
+
     const params = [name, ownerId, description, category, JSON.stringify(detail)]
     
     try {
@@ -36,7 +37,7 @@ app.post('/store', (req, res) => {
             name,
             description,
             category,
-            detail,
+            detail: JSON.stringify(detail),
         })
     } catch(err) {
         console.log(err)
