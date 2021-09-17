@@ -23,7 +23,6 @@ app.post('/store', (req, res) => {
         starCount: 0,
         logo,
         waitingState: 0,
-        isOpen: 0,
     }
 
     const params = [name, ownerId, description, category, JSON.stringify(detail)]

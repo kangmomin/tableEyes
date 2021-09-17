@@ -6,10 +6,7 @@
 
     Params = {
         type: String {
-            id, ownerId, name, star, starCount,
-            lat, lon, maxPersonnel, nowPersonnel,
-            isOpen, description, category, logo,
-            waitingState
+            id, ownerId, name, description, category, detail, nowPersonnel, isOpen
         }
 
         id: Number
@@ -53,7 +50,7 @@
 
     Data = {
         name: String
-        desription: String
+        description: String
         maxPersonnel: Number
         lat: Number<float>
         lon: Number<float>
@@ -69,7 +66,7 @@
 
     Data = {
         name: String
-        desription: String
+        description: String
         lat: Number<float>
         lon: Number<float>
         category: String[]
