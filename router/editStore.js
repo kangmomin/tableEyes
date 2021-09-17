@@ -2,12 +2,12 @@ const app = require('express').Router()
 const mysqli = require('./createConn')
 //유저 인증 추가
 app.put('/store/:id', async (req, res) => {
-    const id = req.params.id || 35
+    const id = req.params.id
     const {
-        name, lat, lon, maxPersonnel, description, logo
+        name, description, detail
     } = req.body
     const category = JSON.stringify(req.body["category[]"] || req.body.category)
-    const params = [name, lat, lon, maxPersonnel, description, category, logo]
+    const params = [name, description, category, JSON.stringify(detail)]
     const parsedParams = parsing(params)
     try {
         const data = updateStore(id, parsedParams)
@@ -33,7 +33,7 @@ async function updateStore(id, params) {
     return new Promise((resolve, reject) => {
         params.push(id)
         const queryString = 
-            `UPDATE store SET name=?, lat=?, lon=?, maxPersonnel=?, description=?, category=?, logo=? WHERE id=?`
+            `UPDATE store SET name=?, description=?, category=?, detail=? WHERE id=?`
         mysqli.query(queryString, params, (err, data) => {
             if(err) return reject(err)
             resolve(data)

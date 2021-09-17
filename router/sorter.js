@@ -5,8 +5,6 @@ app.post('/sort/:mode', (req, res) => {
     const decodedUrl = decodeURIComponent(req.query)
     const data = JSON.parse(decodedUrl)
 
-    console.log(data)
-
     if(
         mode !== "name" &&
         mode !== "star" &&

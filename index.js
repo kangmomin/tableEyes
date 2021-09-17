@@ -5,7 +5,7 @@ const port = 4004
 const bp = require('body-parser')
 const cp = require('cookie-parser')
 const session = require('express-session')
-const FileStore = require('session-file-store')(session)
+const sessionStore = require('express-mysql-session')(session)
 
 const storeRequest = require('./router/storeRequest')
 const addStore = require('./router/addStore')
@@ -39,7 +39,13 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    store:new FileStore(),
+    store:new sessionStore({
+        host: "127.0.0.1",
+        port: 3306,
+        user: "root",
+        password: "#koldin13579",
+        database: "tableEyes"
+    }),
     cookie: { maxAge: 600000000, secure: false }
 }))
 

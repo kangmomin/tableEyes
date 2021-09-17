@@ -2,7 +2,7 @@ const app = require('express').Router()
 const mysqli = require('./createConn')
 
 app.post('/review/:storeId', async (req, res) => {
-    const userId = req.session._id || 35
+    const userId = req.session._id
     const storeId = req.params
     const { description, starCount } = req.body
     const params = [storeId, userId, description, starCount]

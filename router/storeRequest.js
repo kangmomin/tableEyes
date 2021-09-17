@@ -6,7 +6,7 @@ app.get('/store/type/:type?/id/:id?/category/:category?', async (req, res) => {
     const id = req.params.id
     const category = req.params.category
     const query = setQuery(type, id)
-    console.log(query)
+    
     try {
         let db = await getDB(query)
         if(category && !type) db = fillterCategory(category, db) //카테고리 필터
