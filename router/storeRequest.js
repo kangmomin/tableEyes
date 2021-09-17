@@ -29,7 +29,12 @@ app.get('/store/type/:type?/id/:id?/category/:category?', async (req, res) => {
 function fillterCategory(category, db) {
     let result = new Array()
     for (db of db) {
-        if(db.category.includes(category)) result.push(db)
+        for (db_category of JSON.parse(db.category)) {
+            if(db_category == category) {
+                result.push(db)
+                break 
+            }
+        }
     }
 
     return result
