@@ -14,8 +14,8 @@ app.post('/store', (req, res) => {
     const {
         name, lat, lon, maxPersonnel, description, logo, number, openTime, closeTime, holiday, infoDescription,        
     } = req.body
-    const mainCategory = JSON.stringify(req.body["mainCategory[]"])
-    const mainDetail = {
+    const mainCategory = req.body.mainCategory
+    const mainDetail = JSON.stringify({
         maxPersonnel,
         lat,
         lon,
@@ -23,21 +23,21 @@ app.post('/store', (req, res) => {
         starCount: 0,
         logo,
         waitingState: 0,
-    }
+    })
 
-    const conFacility = JSON.stringify(req.body["conFacility[]"])
-    const seat = JSON.stringify(req.body.seat) //FE에서 dafult값을 정의 해서 보내줘야함
+    const conFacility = req.body.conFacility
+    const seat = req.body.seat //FE에서 dafult값을 정의 해서 보내줘야함
     //[{lat, lon, isClear: bool, imgType: sit, type}]
-    const eachDetail = {
+    const eachDetail = JSON.stringify({
         number,
         openTime,
         closeTime,
         holiday,
         infoDescription,
         conFacility
-    }
+    })
 
-    const mainParams = [name, ownerId, description, mainCategory, JSON.stringify(mainDetail)]
+    const mainParams = [ownerId, name, description, mainCategory, mainDetail]
     const eachParams = [conFacility, seat, eachDetail]
     
     try {
@@ -50,7 +50,7 @@ app.post('/store', (req, res) => {
             name,
             description,
             mainCategory,
-            mainDetail: JSON.stringify(mainDetail),
+            mainDetail,
         })
     } catch(err) {
         console.log(err)
@@ -74,12 +74,13 @@ async function addStore(mainParams, eachParams) {
         const insertId = await addMainStore(mainParams)
         await addEachStore(eachParams, insertId)
     } catch (err) {
+        console.log(err)
         return new Error(err)
     }
 }
 
 async function addMainStore(params) {
-    const queryString = `INSERT INTO store (refStore, conFa, description, category, detail) VALUES (?, ?, ?, ?, ?)`
+    const queryString = `INSERT INTO store (ownerId, name, description, category, detail) VALUES (?, ?, ?, ?, ?)`
     return new Promise((resolve, reject) => {
         mysqli.query(queryString, params, (err, data) => {
             if (err) reject(err)
@@ -90,9 +91,11 @@ async function addMainStore(params) {
 
 async function addEachStore(params, insertId) {
     params.unshift(insertId)
-    const queryString = `INSERT INTO eachStore (name, conFacility, seat, eachDetail) VALUES (?, ?, ?, ?)`
+    const queryString = `INSERT INTO eachStore (refStore, conFacility, seat, eachDetail) VALUES (?, ?, ?, ?)`
     return new Promise((reject, resolve) => {
         mysqli.query(queryString, params, (err, data) => {
+            console.log(err)
+            console.log(data)
             if (err) reject(err)
             else resolve(data)
         })
