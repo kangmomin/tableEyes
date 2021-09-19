@@ -6,16 +6,16 @@ app.post('/store', (req, res) => {
 
     if(ownerId == undefined) return res.status(401).json({
         errMsg: "need login",
-        detail: {
+        mainDetail: {
             ownerId
         }
     })
 
     const {
-        name, lat, lon, maxPersonnel, description, logo
+        name, lat, lon, maxPersonnel, description, logo, number, openTime, closeTime, holiday, infoDescription,        
     } = req.body
-    const category = JSON.stringify(req.body["category[]"] || req.body.category)
-    const detail = {
+    const mainCategory = JSON.stringify(req.body["mainCategory[]"])
+    const mainDetail = {
         maxPersonnel,
         lat,
         lon,
@@ -25,18 +25,32 @@ app.post('/store', (req, res) => {
         waitingState: 0,
     }
 
-    const params = [name, ownerId, description, category, JSON.stringify(detail)]
+    const conFacility = JSON.stringify(req.body["conFacility[]"])
+    const seat = JSON.stringify(req.body.seat) //FE에서 dafult값을 정의 해서 보내줘야함
+    //[{lat, lon, isClear: bool, imgType: sit, type}]
+    const eachDetail = {
+        number,
+        openTime,
+        closeTime,
+        holiday,
+        infoDescription,
+        conFacility
+    }
+
+    const mainParams = [name, ownerId, description, mainCategory, JSON.stringify(mainDetail)]
+    const eachParams = [conFacility, seat, eachDetail]
     
     try {
-        const parsedParams = parsing(params)
-        const result = addStore(parsedParams)
+        const parsedMainParams = parsing(mainParams)
+        const parsedEachParams = parsing(eachParams)
+        const result = addStore(parsedMainParams, parsedEachParams)
         res.status(201).json({
-            id: result.inserId,
+            id: result,
             ownerId,
             name,
             description,
-            category,
-            detail: JSON.stringify(detail),
+            mainCategory,
+            mainDetail: JSON.stringify(mainDetail),
         })
     } catch(err) {
         console.log(err)
@@ -55,9 +69,29 @@ function parsing(params) {
     return result
 }
 
-async function addStore(params) {
-    const queryString = `INSERT INTO store (name, ownerId, description, category, detail) VALUES (?, ?, ?, ?, ?)`
+async function addStore(mainParams, eachParams) {
+    try {
+        const insertId = await addMainStore(mainParams)
+        await addEachStore(eachParams, insertId)
+    } catch (err) {
+        return new Error(err)
+    }
+}
+
+async function addMainStore(params) {
+    const queryString = `INSERT INTO store (refStore, conFa, description, category, detail) VALUES (?, ?, ?, ?, ?)`
     return new Promise((resolve, reject) => {
+        mysqli.query(queryString, params, (err, data) => {
+            if (err) reject(err)
+            else resolve(data.insertId)
+        })
+    })
+}
+
+async function addEachStore(params, insertId) {
+    params.unshift(insertId)
+    const queryString = `INSERT INTO eachStore (name, conFacility, seat, eachDetail) VALUES (?, ?, ?, ?)`
+    return new Promise((reject, resolve) => {
         mysqli.query(queryString, params, (err, data) => {
             if (err) reject(err)
             else resolve(data)
