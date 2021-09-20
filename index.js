@@ -19,6 +19,7 @@ const reviewRequest = require('./router/reviewRequest')
 const sorter = require('./router/sorter')
 const errorLogger = require('./router/errorLogger')
 const imgUpload = require('./router/imgUpload')
+const eachStoreRequest = require('./router/eachStoreRequest')
 
 app.use(express.json())
 app.set('views', __dirname + '/public')
@@ -55,6 +56,7 @@ app.use(errorLogger)
 
 app.get('/store/type/:type?/id/:id?/category/:category?', storeRequest)
 app.get('/review/:storeId', reviewRequest)
+app.get("/each-store/:id", eachStoreRequest)
 
 app.put('/store/:id', editStore)
 

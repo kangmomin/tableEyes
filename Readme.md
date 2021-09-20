@@ -15,6 +15,16 @@
     }
     ```
 
++ 매장별 정보 가져오기
+    ```
+    link = /each-store/:id
+    Method = GET
+
+    Params = {
+        id: Number = 가져올 매장의 아이디
+    }
+    ```
+
 + 가입
     ```
     link = /sign-up
@@ -49,13 +59,20 @@
     Method = POST
 
     Data = {
-        name: String
-        description: String
-        maxPersonnel: Number
-        lat: Number<float>
-        lon: Number<float>
-        category: String[]
+        name: String = 매장 이름
+        description: String = 소개글
+        maxPersonnel: Number = 최대 수용 가능 인원
+        lat: Number<float> = 해당 매장의 위도
+        lon: Number<float> = 해당 매장의 경도
+        category: Array = 카테고리
         logo: String = image link
+        openTime: String = 오픈 시각
+        closeTime: String = 종료 시각
+        holiday: String = 휴무일
+        infoDescription: String<html> = 매장별 페이에 들어갈 정보글
+        conFacility: Array = 편의시설
+        seat: Array = 각 자리별 정보(기본값 포함)
+        number: Number = 해당 매장의 전화번호
     }
     ```
 
