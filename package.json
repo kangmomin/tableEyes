@@ -1,0 +1,24 @@
+{
+  "name": "tableeyes",
+  "version": "1.0.0",
+  "description": "+ 매장 정보 가져오기\r     ```\r     link = /store/type/:type?/id/:id?/category/:category?\r     Method = GET",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express-mysql-session": "^2.1.7",
+    "express-session": "^1.17.2",
+    "multer": "^1.4.3",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.6.5",
+    "path": "^0.12.7"
+  }
+}

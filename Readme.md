@@ -64,7 +64,7 @@
         maxPersonnel: Number = 최대 수용 가능 인원
         lat: Number<float> = 해당 매장의 위도
         lon: Number<float> = 해당 매장의 경도
-        category: Array = 카테고리
+        mainCategory: Array = 카테고리
         logo: String = image link
         openTime: String = 오픈 시각
         closeTime: String = 종료 시각
